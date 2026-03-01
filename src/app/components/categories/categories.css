@@ -1,0 +1,208 @@
+
+/* contenedor principal que cubre toda la pantalla */
+.nebula-container {
+  min-height: 100vh;
+  width: 100%;
+  background: #000000;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* caja principal donde vive todo el contenido */
+.main-box {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* titulo principal de la vista */
+.page-title {
+  font-family: 'Orbitron', sans-serif;
+  color: #39ff14;
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+}
+
+/* caja del formulario de crear categoria */
+.form-box {
+  background: rgba(0, 20, 10, 0.85);
+  border: 1px solid #39ff14;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* titulo del formulario y de la lista */
+.form-title {
+  font-family: 'Orbitron', sans-serif;
+  color: #00ff88;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+/* contenedor de cada label e input */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* etiqueta de cada campo */
+.input-group label {
+  color: #5a8a6a;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* estilos de los inputs */
+.input-group input {
+  background: rgba(0, 30, 15, 0.8);
+  border: 1px solid #1a4a2a;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #39ff14;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* borde verde al enfocar el input */
+.input-group input:focus {
+  border-color: #39ff14;
+}
+
+/* placeholder del input */
+.input-group input::placeholder {
+  color: #2a5a3a;
+}
+
+/* boton principal de accion */
+.btn-principal {
+  background: linear-gradient(135deg, #0d3a1a, #1a6a30);
+  border: 1px solid #39ff14;
+  border-radius: 8px;
+  color: #39ff14;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 12px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* efecto hover del boton principal */
+.btn-principal:hover {
+  background: linear-gradient(135deg, #1a6a30, #39ff14);
+  color: #000;
+}
+
+/* mensaje de error */
+.error-msg {
+  color: #ff4444;
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+/* mensaje de exito */
+.success-msg {
+  color: #39ff14;
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(57, 255, 20, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(57, 255, 20, 0.3);
+}
+
+/* caja de la lista de categorias */
+.list-box {
+  background: rgba(0, 20, 10, 0.85);
+  border: 1px solid #39ff14;
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* mensaje cuando no hay categorias */
+.empty-msg {
+  color: #5a8a6a;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* cada fila de la lista de categorias */
+.category-item {
+  display: flex;
+  justify-content: space-between; /* separa la info del boton eliminar */
+  align-items: center;
+  border: 1px solid #1a4a2a;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+/* contenedor de la informacion de la categoria */
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* espacio entre cada dato */
+}
+
+/* icono de la categoria */
+.category-icon {
+  font-size: 1.2rem;
+}
+
+/* cuadro de color de la categoria */
+.category-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* nombre de la categoria */
+.category-name {
+  color: #39ff14;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* descripcion de la categoria */
+.category-desc {
+  color: #5a8a6a;
+  font-size: 0.85rem;
+}
+
+/* boton de eliminar */
+.btn-eliminar {
+  background: transparent;
+  border: 1px solid #ff4444;
+  border-radius: 6px;
+  color: #ff4444;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+/* efecto hover del boton eliminar */
+.btn-eliminar:hover {
+  background: rgba(255, 68, 68, 0.1);
+}

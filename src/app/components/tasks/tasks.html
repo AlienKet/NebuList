@@ -1,1 +1,145 @@
-<p>tasks works!</p>
+<!-- vista principal de tareas -->
+<div class="nebula-container">
+
+  <!-- caja principal -->
+  <div class="main-box">
+
+    <!-- titulo de la vista -->
+    <h1 class="page-title">Mis Tareas</h1>
+
+    <!-- formulario para crear una nueva tarea -->
+    <div class="form-box">
+
+      <h2 class="form-title">Nueva Tarea</h2>
+
+      <!-- campo de titulo -->
+      <div class="input-group">
+        <label>Titulo</label>
+        <input 
+          type="text" 
+          placeholder="Titulo de la tarea" 
+          [(ngModel)]="nuevaTarea.title" />
+          <!-- ngModel conecta el input con la variable nuevaTarea.title -->
+      </div>
+
+      <!-- campo de descripcion -->
+      <div class="input-group">
+        <label>Descripcion</label>
+        <input 
+          type="text" 
+          placeholder="Descripcion de la tarea" 
+          [(ngModel)]="nuevaTarea.description" />
+      </div>
+
+      <!-- campo de status, es un dropdown con las opciones del enum -->
+      <div class="input-group">
+        <label>Status</label>
+        <select [(ngModel)]="nuevaTarea.status">
+        <!-- select es un dropdown, ngModel lo conecta con la variable -->
+          <option value="pending">Pendiente</option>
+          <option value="in_progress">En Progreso</option>
+          <option value="completed">Completada</option>
+        </select>
+      </div>
+
+      <!-- campo de prioridad -->
+      <div class="input-group">
+        <label>Prioridad</label>
+        <select [(ngModel)]="nuevaTarea.priority">
+          <option value="low">Baja</option>
+          <option value="medium">Media</option>
+          <option value="high">Alta</option>
+        </select>
+      </div>
+
+      <!-- campo de fecha limite, es opcional -->
+      <div class="input-group">
+        <label>Fecha Limite</label>
+        <input 
+          type="date" 
+          [(ngModel)]="nuevaTarea.dueDate" />
+      </div>
+
+      <!-- campo de categoria, es opcional -->
+      <div class="input-group">
+        <label>Categoria</label>
+        <input 
+          type="text" 
+          placeholder="Nombre de la categoria" 
+          [(ngModel)]="nuevaTarea.categoryName" />
+      </div>
+
+      <!-- mensaje de error si algo falla -->
+      <p class="error-msg" *ngIf="errorTarea">{{ errorTarea }}</p>
+
+      <!-- mensaje de exito si se creo bien -->
+      <p class="success-msg" *ngIf="mensajeExito">{{ mensajeExito }}</p>
+
+      <!-- boton para crear la tarea -->
+      <button class="btn-principal" (click)="crearTarea()">
+        Crear Tarea
+      </button>
+
+    </div>
+
+    <!-- lista de tareas -->
+    <div class="list-box">
+
+      <h2 class="form-title">Lista de Tareas</h2>
+
+      <!-- mensaje si no hay tareas -->
+      <p class="empty-msg" *ngIf="tareas.length === 0">
+        No tienes tareas aun
+      </p>
+
+      <!-- recorre la lista de tareas y muestra cada una -->
+      <div class="task-item" *ngFor="let tarea of tareas">
+
+        <!-- informacion de la tarea -->
+        <div class="task-info">
+
+          <!-- titulo de la tarea -->
+          <span class="task-title">{{ tarea.title }}</span>
+
+          <!-- descripcion de la tarea -->
+          <span class="task-desc">{{ tarea.description }}</span>
+
+          <!-- fila de etiquetas -->
+          <div class="task-tags">
+
+            <!-- etiqueta de status con color segun el valor -->
+            <span class="tag-status" [ngClass]="getStatusClass(tarea.status)">
+              {{ tarea.status }}
+            </span>
+
+            <!-- etiqueta de prioridad con color segun el valor -->
+            <span class="tag-priority" [ngClass]="getPriorityClass(tarea.priority)">
+              {{ tarea.priority }}
+            </span>
+
+            <!-- fecha limite si tiene -->
+            <span class="tag-date" *ngIf="tarea.dueDate">
+              {{ tarea.dueDate }}
+            </span>
+
+            <!-- categoria si tiene -->
+            <span class="tag-category" *ngIf="tarea.categoryName">
+              {{ tarea.categoryName }}
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- boton para eliminar la tarea -->
+        <button class="btn-eliminar" (click)="eliminarTarea(tarea.id)">
+          Eliminar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
