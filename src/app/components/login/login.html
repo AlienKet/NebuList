@@ -1,0 +1,139 @@
+<!-- contenedor principal que cubre toda la pantalla -->
+ <!-- ng serve para ejecutar -->
+<div class="nebula-container">
+
+  <!-- caja del centro donde vive el formulario -->
+  <div class="login-box">
+
+    <!-- area del titulo y subtitulo de la app -->
+    <div class="logo-area">
+      <h1 class="app-title">NebuList</h1>
+      <p class="app-subtitle">Sistema de Agenda Intergalactica</p>
+    </div>
+
+    <!-- botones para cambiar entre login y registro -->
+    <div class="tab-buttons">
+
+      <!-- boton de login, se pone activo si modoActual es login -->
+      <button 
+        [class.active]="modoActual === 'login'" 
+        (click)="cambiarModo('login')">
+        Iniciar Sesion
+      </button>
+
+      <!-- boton de registro, se pone activo si modoActual es registro -->
+      <button 
+        [class.active]="modoActual === 'registro'" 
+        (click)="cambiarModo('registro')">
+        Registrarse
+      </button>
+
+    </div>
+
+    <!-- formulario de login, solo aparece si modoActual es login -->
+    <div *ngIf="modoActual === 'login'" class="form-area">
+
+      <h2 class="form-title">Acceso al Sistema</h2>
+
+      <!-- campo de correo -->
+      <div class="input-group">
+        <label>Correo Electronico</label>
+        <input 
+          type="email" 
+          placeholder="tu@galaxia.com" 
+          [(ngModel)]="loginEmail" />
+          <!-- ngModel conecta el input con la variable loginEmail del componente -->
+      </div>
+
+      <!-- campo de contrasena -->
+      <div class="input-group">
+        <label>Contrasena</label>
+        <input 
+          type="password" 
+          placeholder="••••••••" 
+          [(ngModel)]="loginPassword" />
+          <!-- ngModel conecta el input con la variable loginPassword del componente -->
+      </div>
+
+      <!-- mensaje de error si el login falla, solo aparece si errorLogin tiene algo -->
+      <p class="error-msg" *ngIf="errorLogin">{{ errorLogin }}</p>
+
+      <!-- mensaje de exito si el login fue bien, solo aparece si mensajeExito tiene algo -->
+      <p class="success-msg" *ngIf="mensajeExito">{{ mensajeExito }}</p>
+
+      <!-- boton para enviar el formulario de login -->
+      <button class="btn-principal" (click)="iniciarSesion()">
+        Entrar
+      </button>
+
+      <!-- texto clickeable para ir al formulario de registro -->
+      <p class="link-texto">
+        ¿Eres nuevo? 
+        <span (click)="cambiarModo('registro')">Registrate aqui</span>
+      </p>
+
+    </div>
+
+    <!-- formulario de registro, solo aparece si modoActual es registro -->
+    <div *ngIf="modoActual === 'registro'" class="form-area">
+
+      <h2 class="form-title">Nuevo Usuario</h2>
+
+      <!-- campo de nombre de usuario -->
+      <div class="input-group">
+        <label>Nombre de Usuario</label>
+        <input 
+          type="text" 
+          placeholder="Alien" 
+          [(ngModel)]="registroNombre" />
+      </div>
+
+      <!-- campo de correo para registro -->
+      <div class="input-group">
+        <label>Correo Electronico</label>
+        <input 
+          type="email" 
+          placeholder="tu@galaxia.com" 
+          [(ngModel)]="registroEmail" />
+      </div>
+
+      <!-- campo de contrasena para registro -->
+      <div class="input-group">
+        <label>Contrasena</label>
+        <input 
+          type="password" 
+          placeholder="••••••••" 
+          [(ngModel)]="registroPassword" />
+      </div>
+
+      <!-- campo para confirmar que la contrasena es la misma -->
+      <div class="input-group">
+        <label>Confirmar Contrasena</label>
+        <input 
+          type="password" 
+          placeholder="••••••••" 
+          [(ngModel)]="registroConfirm" />
+      </div>
+
+      <!-- mensaje de error si el registro falla -->
+      <p class="error-msg" *ngIf="errorRegistro">{{ errorRegistro }}</p>
+
+      <!-- mensaje de exito si el registro fue bien -->
+      <p class="success-msg" *ngIf="mensajeExitoRegistro">{{ mensajeExitoRegistro }}</p>
+
+      <!-- boton para enviar el formulario de registro -->
+      <button class="btn-principal" (click)="registrarse()">
+        Unirse
+      </button>
+
+      <!-- texto clickeable para volver al login -->
+      <p class="link-texto">
+        ¿Ya tienes una cuenta? 
+        <span (click)="cambiarModo('login')">Inicia sesion</span>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

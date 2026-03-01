@@ -1,0 +1,207 @@
+
+/* resetea margenes y padding de todos los elementos para que no haya espacios raros */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* hace que el padding no agrande el elemento */
+}
+
+/* contenedor principal que ocupa toda la pantalla con fondo negro */
+.nebula-container {
+  min-height: 100vh; /* ocupa minimo el 100% de la altura de la pantalla */
+  width: 100%;
+  background: #000000; /* fondo negro puro */
+  display: flex; /* activa flexbox para centrar la caja */
+  align-items: center; /* centra verticalmente */
+  justify-content: center; /* centra horizontalmente */
+  font-family: 'Rajdhani', sans-serif; /* fuente principal */
+}
+
+/* caja del centro donde vive el formulario */
+.login-box {
+  background: rgba(0, 20, 10, 0.85); /* fondo oscuro con tono verdoso */
+  border: 1px solid #39ff14; /* borde verde neon */
+  border-radius: 16px; /* esquinas redondeadas */
+  padding: 40px 36px; /* espacio interno */
+  width: 100%;
+  max-width: 420px; /* ancho maximo de la caja */
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.2), 0 0 80px rgba(0, 255, 136, 0.1); /* sombra verde neon */
+}
+
+/* area del titulo arriba */
+.logo-area {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* titulo principal NebuList */
+.app-title {
+  font-family: 'Orbitron', sans-serif; /* fuente futurista */
+  font-size: 2rem;
+  color: #39ff14; /* verde neon */
+  text-shadow: 0 0 20px rgba(57, 255, 20, 0.8); /* resplandor verde */
+  letter-spacing: 4px; /* espaciado entre letras para que se vea futurista */
+  margin: 8px 0 4px;
+}
+
+/* subtitulo debajo del titulo */
+.app-subtitle {
+  color: #5a8a6a; /* verde apagado */
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase; /* todo en mayusculas */
+}
+
+/* contenedor de los botones de pestanas login y registro */
+.tab-buttons {
+  display: flex; /* pone los botones en fila */
+  margin-bottom: 24px;
+  border-bottom: 1px solid #1a3a2a; /* linea verde oscura abajo */
+}
+
+/* cada boton de pestana */
+.tab-buttons button {
+  flex: 1; /* cada boton ocupa el mismo espacio */
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: #5a8a6a; /* verde apagado cuando no esta activo */
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.3s ease; /* transicion suave al cambiar estado */
+  border-bottom: 2px solid transparent;
+}
+
+/* boton activo, el que esta seleccionado */
+.tab-buttons button.active {
+  color: #39ff14; /* verde neon cuando esta activo */
+  border-bottom: 2px solid #39ff14; /* linea verde abajo del boton activo */
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+/* area del formulario donde van los inputs */
+.form-area {
+  display: flex;
+  flex-direction: column; /* apila los elementos uno debajo del otro */
+  gap: 16px; /* espacio entre cada elemento */
+}
+
+/* titulo del formulario */
+.form-title {
+  font-family: 'Orbitron', sans-serif;
+  color: #00ff88;
+  font-size: 1rem;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+/* contenedor de cada label e input */
+.input-group {
+  display: flex;
+  flex-direction: column; /* pone el label arriba y el input abajo */
+  gap: 6px;
+}
+
+/* etiqueta de cada campo */
+.input-group label {
+  color: #5a8a6a;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* estilos de los campos de texto */
+.input-group input {
+  background: rgba(0, 30, 15, 0.8); /* fondo oscuro verdoso */
+  border: 1px solid #1a4a2a;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #39ff14; /* texto verde neon al escribir */
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  outline: none; /* quita el borde azul por defecto del navegador */
+}
+
+/* cuando el usuario hace clic en el input */
+.input-group input:focus {
+  border-color: #39ff14;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.3); /* resplandor verde al enfocar */
+}
+
+/* texto de ejemplo dentro del input antes de escribir */
+.input-group input::placeholder {
+  color: #2a5a3a; /* verde oscuro apagado */
+}
+
+/* boton principal de accion */
+.btn-principal {
+  background: linear-gradient(135deg, #0d3a1a, #1a6a30); /* gradiente verde oscuro */
+  border: 1px solid #39ff14;
+  border-radius: 8px;
+  color: #39ff14;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 14px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* efecto cuando el mouse pasa por encima del boton */
+.btn-principal:hover {
+  background: linear-gradient(135deg, #1a6a30, #39ff14);
+  color: #000; /* texto negro para contraste */
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+  transform: translateY(-2px); /* sube un poco el boton */
+}
+
+/* mensaje de error cuando algo falla */
+.error-msg {
+  color: #ff4444;
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+/* mensaje de exito cuando algo sale bien */
+.success-msg {
+  color: #39ff14;
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(57, 255, 20, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(57, 255, 20, 0.3);
+}
+
+/* texto para cambiar entre login y registro */
+.link-texto {
+  color: #5a8a6a;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* el span clickeable dentro del link-texto */
+.link-texto span {
+  color: #39ff14;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+/* efecto al pasar el mouse por el enlace */
+.link-texto span:hover {
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+}
