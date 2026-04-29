@@ -1,0 +1,67 @@
+<div class="nebula-container">
+
+  <div class="main-box dashboard-box">
+<button class="btn-logout" (click)='cerrarSesion()'>
+    Cerrar Sesión 🚀
+  </button>
+    <h1 class="page-title">Centro de Actividades</h1>
+
+    <div class="action-bar">
+      <button class="btn-principal" routerLink="/categories">
+        <span class="btn-icon">📁</span> Agregar / Ver Categorias
+      </button>
+      <button class="btn-principal" routerLink="/tasks">
+        <span class="btn-icon">📝</span> Agregar / Ver Tareas
+      </button>
+    </div>
+
+    <div class="grid-container">
+
+      <div class="panel-section">
+        <h2 class="form-title">⏳ Tareas Pendientes</h2>
+        
+        <p class="empty-msg" *ngIf="tareasPendientesAgrupadas.length === 0">No hay tareas pendientes.</p>
+
+        <div class="category-group" *ngFor="let grupo of tareasPendientesAgrupadas">
+          
+          <div class="category-header">
+            <span class="category-icon">{{ grupo.categoria.icon }}</span>
+            <span class="category-color" [style.background]="grupo.categoria.color"></span>
+            <span class="category-name" [style.color]="grupo.categoria.color">{{ grupo.categoria.name }}</span>
+          </div>
+
+          <div class="task-card" *ngFor="let tarea of grupo.tareas">
+            <h3 class="task-title">{{ tarea.title }}</h3>
+            <p class="task-desc">{{ tarea.description }}</p>
+            <span class="task-date">Vence: {{ tarea.dueDate | date:'shortDate' }}</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="panel-section alert-section">
+        <h2 class="form-title alert-title">⚠️ Proximas a Vencer</h2>
+        
+        <p class="empty-msg" *ngIf="tareasPorVencer.length === 0">No hay tareas proximas a vencer</p>
+
+        <div class="task-card task-alert" *ngFor="let tarea of tareasPorVencer">
+          <h3 class="task-title">{{ tarea.title }}</h3>
+          <p class="task-desc">{{ tarea.description }}</p>
+          <span class="task-date danger-date">Vence: {{ tarea.dueDate | date:'shortDate' }}</span>
+        </div>
+      </div>
+
+      <div class="panel-section history-section">
+        <h2 class="form-title history-title">✅ Historial</h2>
+        
+        <p class="empty-msg" *ngIf="tareasCompletadasOVencidas.length === 0">Aun no hay historial</p>
+
+        <div class="task-card task-completed" *ngFor="let tarea of tareasCompletadasOVencidas">
+          <h3 class="task-title">{{ tarea.title }}</h3>
+          <span class="task-status">Estado: {{ tarea.status }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

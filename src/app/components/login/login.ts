@@ -24,18 +24,18 @@ export class LoginComponent {
   // estas variables se conectan con los inputs del html usando ngModel
   // lo que el usuario escribe en el input se guarda automaticamente aqui
   loginEmail: string = ''; // guarda el email que escribe el usuario
-  loginPassword: string = ''; // guarda la contrasena que escribe el usuario
-  errorLogin: string = ''; // guarda el mensaje de error si el login falla
-  mensajeExito: string = ''; // guarda el mensaje si el login fue bien
+  loginPassword: string = ''; 
+  errorLogin: string = ''; 
+  mensajeExito: string = ''; 
   cargandoLogin: boolean = false; // controla el estado de carga mientras el backend responde
 
   // variables del formulario de registro
   registroNombre: string = ''; // guarda el nombre que escribe el usuario
-  registroEmail: string = ''; // guarda el email del registro
-  registroPassword: string = ''; // guarda la contrasena del registro
-  registroConfirm: string = ''; // guarda la confirmacion de la contrasena
-  errorRegistro: string = ''; // guarda el mensaje de error si el registro falla
-  mensajeExitoRegistro: string = ''; // guarda el mensaje si el registro fue bien
+  registroEmail: string = ''; 
+  registroPassword: string = ''; 
+  registroConfirm: string = ''; 
+  errorRegistro: string = ''; 
+  mensajeExitoRegistro: string = ''; 
   cargandoRegistro: boolean = false; // controla el estado de carga mientras el backend responde
 
   constructor(
@@ -47,10 +47,10 @@ export class LoginComponent {
   // se llama desde el html cuando el usuario hace clic en las pestanas o en los enlaces
   cambiarModo(modo: string): void {
     this.modoActual = modo; // cambia el modo al que se recibe, puede ser login o registro
-    this.errorLogin = ''; // limpia el error de login al cambiar de pestana
-    this.errorRegistro = ''; // limpia el error de registro al cambiar de pestana
-    this.mensajeExito = ''; // limpia el mensaje de exito de login al cambiar de pestana
-    this.mensajeExitoRegistro = ''; // limpia el mensaje de exito de registro al cambiar de pestana
+    this.errorLogin = ''; // limpia el error de login al cambiar de pestaña
+    this.errorRegistro = ''; 
+    this.mensajeExito = ''; 
+    this.mensajeExitoRegistro = ''; 
   }
 
   // funcion que se ejecuta cuando el usuario hace clic en el boton Entrar
@@ -86,8 +86,8 @@ export class LoginComponent {
         this.mensajeExito = 'Bienvenido!';
 
         setTimeout(() => {
-          this.router.navigate(['/categories']);
-          // redirige a la pagina de categorias despues de 1 segundo
+          this.router.navigate(['/home']);
+          // redirige a la pagina de home despues de 1 segundo
         }, 1000);
       },
 
@@ -118,42 +118,49 @@ export class LoginComponent {
     }
 
     if (this.registroPassword.length < 6) {
-    // verifica que la contrasena tenga minimo 6 caracteres
-      this.errorRegistro = 'La contrasena debe tener al menos 6 caracteres';
+    // verifica que la contraseña tenga minimo 6 caracteres
+      this.errorRegistro = 'La contraseña debe tener al menos 6 caracteres';
       return;
     }
 
     if (this.registroPassword !== this.registroConfirm) {
-    // verifica que la contrasena y la confirmacion sean iguales
+    // verifica que la contraseña y la confirmacion sean iguales
     // !== significa que son diferentes
-      this.errorRegistro = 'Las contrasenas no coinciden';
+      this.errorRegistro = 'Las contraseñas no coinciden';
       return;
     }
 
     this.cargandoRegistro = true;
     // activa el estado de carga mientras espera la respuesta del backend
 
-    this.authService.registrar(this.registroNombre, this.registroEmail, this.registroPassword).subscribe({
-    // subscribe escucha la respuesta del backend cuando llegue
+   this.authService.registrar(this.registroNombre, this.registroEmail, this.registroPassword).subscribe({
+  // subscribe escucha la respuesta del backend cuando llegue
 
-      next: () => {
-      // next se ejecuta cuando el registro fue exitoso
-        this.cargandoRegistro = false;
-        this.mensajeExitoRegistro = 'Registro exitoso! Ahora inicia sesion';
+    next: (respuesta) => {
+    // next se ejecuta cuando el registro fue exitoso
+    // el backend devuelve el token al registrarse, lo guardamos directamente
+      this.cargandoRegistro = false;
+      this.mensajeExitoRegistro = 'Registro exitoso! Ahora inicia sesion';
 
-        setTimeout(() => {
-          this.cambiarModo('login');
-          // cambia automaticamente al formulario de login despues de 1.5 segundos
-        }, 1500);
-      },
+      setTimeout(() => {
+        this.cambiarModo('login');
+        // cambia automaticamente al formulario de login despues de 1.5 segundos
+      }, 1500);
+    },
 
-      error: (err) => {
-      // error se ejecuta cuando el backend responde con un error
-        this.cargandoRegistro = false;
+    error: (err) => {
+    // error se ejecuta cuando el backend responde con un error
+      this.cargandoRegistro = false;
+      if (err.error?.message === 'Ya existe un usuario con ese email') {
+        this.errorRegistro = 'Este correo ya esta registrado, inicia sesion';
+      } else {
         this.errorRegistro = err.error?.message || 'Error al registrarse';
-        // muestra el mensaje de error que manda el backend, o un mensaje generico
       }
-    });
-  }
+      // muestra el mensaje de error que manda el backend, o un mensaje generico
+    }
+  });
+  
 
+  }
+  
 }

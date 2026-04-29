@@ -10,12 +10,15 @@ import { CategoriesComponent } from './components/categories/categories';
 
 import { TasksComponent } from './components/tasks/tasks';
 // importamos el componente tasks para asignarlo a su ruta
+import { HomeComponent } from './components/home/home';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   // path vacio significa la ruta raiz, o sea localhost:4200
   // cuando el usuario entra a la app ve el login primero
 
+  { path: 'home', component: HomeComponent },
+  
   { path: 'categories', component: CategoriesComponent },
   // localhost:4200/categories lleva a la vista de categorias
 

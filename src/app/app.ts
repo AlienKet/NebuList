@@ -1,13 +1,12 @@
+//esta clase representa el componente principal de la aplicación, es el punto de entrada de la aplicación y 
+// contiene el enrutador para mostrar los diferentes componentes según la ruta.
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-// import { LoginComponent } from './components/login/login';
-// // importamos el componente login para poder usarlo en el html
-// import { CategoriesComponent } from './components/categories/categories';
-// import { TasksComponent } from './components/tasks/tasks';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet], // registramos el componente tasks aqui
+  imports: [RouterOutlet], //RouterOutlet es un componente que se encarga de mostrar el componente correspondiente a la ruta actual
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })

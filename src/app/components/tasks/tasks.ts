@@ -1,133 +1,175 @@
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TasksService } from '../../services/tasks';
+import { CategoriesService } from '../../services/categories';
+import { Router , RouterModule} from '@angular/router';
 
-
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // necesario para ngModel
-import { CommonModule } from '@angular/common'; // necesario para *ngIf, *ngFor y ngClass
-
-
-interface Tarea {
+interface Task {
   id: number;
-  title: string;       
-  description: string;  
-  status: string;       // puede ser pending, in_progress o completed
-  priority: string;     // puede ser low, medium o high
-  dueDate: string;      // fecha limite, puede estar vacia
-  categoryName: string; // nombre de la categoria, puede estar vacio
+  title: string;
+  description: string;
+  status: string;
+  priority: string;
+  dueDate: string;
+  categoryId: number | null; 
 }
 
 @Component({
   selector: 'app-tasks',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
+  standalone: true,//standalone es para que no sea necesario declararlo en un módulo, se puede usar directamente
+  imports: [FormsModule, CommonModule, RouterModule],//importamos FormsModule para usar ngModel en el formulario
+  // CommonModule para usar *ngIf y *ngFor, 
+  // RouterModule para usar routerLink en el template
   templateUrl: './tasks.html',
   styleUrls: ['./tasks.css']
 })
-export class TasksComponent {
+export class TasksComponent implements OnInit {
 
-  // lista de tareas con datos de ejemplo
-  tareas: Tarea[] = [
-    {
-      id: 1,
-      title: 'Tarea',
-      description: 'Vistas Front',
-      status: 'pending',
-      priority: 'high',
-      dueDate: '2026-03-15',
-      categoryName: 'Trabajo'
-    },
-    {
-      id: 2,
-      title: 'Hacer ejercicio',
-      description: '30 minutos de cardio',
-      status: 'in_progress',
-      priority: 'medium',
-      dueDate: '',
-      categoryName: 'Personal'
-    },
-    {
-      id: 3,
-      title: 'Comprar comida',
-      description: 'Ir al supermercado',
-      status: 'completed',
-      priority: 'low',
-      dueDate: '2026-03-10',
-      categoryName: ''
-    },
-  ];
+  tasks: Task[] = [];
+  categories: any[] = []; 
 
-  // objeto que guarda los datos del formulario de nueva tarea
   nuevaTarea = {
     title: '',
     description: '',
-    status: 'pending',    // valor por defecto del dropdown
-    priority: 'medium',   // valor por defecto del dropdown
+    status: 'Pendiente', 
+    priority: 'Media',
     dueDate: '',
-    categoryName: ''
+    categoryId: null as number | null
   };
 
-  errorTarea: string = '';   // mensaje de error si algo falla
-  mensajeExito: string = ''; // mensaje de exito si se creo bien
-  contadorId: number = 4;    // empieza en 4 porque ya hay 3 de ejemplo
+  errorTarea: string = '';
+  mensajeExito: string = '';
+  cargando: boolean = false;
 
-  // funcion que se ejecuta cuando el usuario hace clic en Crear Tarea
-  crearTarea(): void {
-    this.errorTarea = '';
-    this.mensajeExito = '';
+  constructor(
+    private tasksService: TasksService,
+    private categoriesService: CategoriesService,
+    private router: Router
+  ) {}
 
-    if (!this.nuevaTarea.title) {
-    // verifica que el titulo no este vacio
-      this.errorTarea = 'El titulo es obligatorio';
-      return;
+  ngOnInit(): void {//ngOnInit es el método que se ejecuta al cargar el componente, aquí se llama a cargarDatos para obtener las tareas y 
+  // categorías desde el backend
+    this.cargarDatos();
+  }
+
+  cargarDatos(): void {
+    this.cargando = true;
+    this.categoriesService.obtenerTodas().subscribe({
+      next: (cats) => {//cats es para almacenar las categorías obtenidas del backend
+        this.categories = cats;
+        this.tasksService.obtenerTodas().subscribe({
+          next: (ts) => {//ts es para almacenar las tareas obtenidas del backend
+            this.tasks = ts;
+            this.cargando = false;
+          },
+          error: () => this.cargando = false
+        });
+      },
+      error: (err) => {// Si el error es 401, redirigimos al login
+        //el error 401 significa que el usuario no está autenticado, por lo que se redirige al login para que inicie sesión y 
+        // obtenga un token válido
+        if (err.status === 401) this.router.navigate(['']);
+        this.cargando = false;
+      }
+    });
+  }
+
+ crearTarea(): void {
+  this.errorTarea = '';
+  this.mensajeExito = '';
+
+  if (!this.nuevaTarea.title) {
+    this.errorTarea = 'El titulo es obligatorio';
+    return;
+  }
+
+  // aqui se construye el payload para enviar al backend, se manejan los campos opcionales como dueDate y 
+  // categoryId para evitar problemas de formato o valores no 
+  //payload significa la carga útil, es decir, los datos que se van a enviar al backend para crear una nueva tarea
+  const payload: any = {
+    title: this.nuevaTarea.title,
+    description: this.nuevaTarea.description || '',
+    status: this.nuevaTarea.status,
+    priority: this.nuevaTarea.priority
+  };
+
+  // Manejo de fecha
+  if (this.nuevaTarea.dueDate) {
+    //  Esto es para evitar enviar una fecha vacía o mal formateada
+    payload.dueDate = this.nuevaTarea.dueDate;
+  } else {
+    // Si el backend no acepta null, es mejor no enviar la propiedad si está vacía
+    payload.dueDate = null; 
+  }
+
+  // Manejo de categoria
+  // Si el valor es "null" (como string desde el select) o null real, lo enviamos como null
+  if (this.nuevaTarea.categoryId && this.nuevaTarea.categoryId.toString() !== 'null') {
+    payload.categoryId = Number(this.nuevaTarea.categoryId);
+  } else {
+    payload.categoryId = null;
+  }
+
+  //aqui se llama al servicio para crear la tarea, se maneja la respuesta para actualizar la lista de tareas y 
+  // mostrar mensajes de éxito o error
+  this.tasksService.crear(payload as any).subscribe({
+    next: (tareaCreada) => {
+      this.tasks.push(tareaCreada as unknown as Task);
+      this.resetFormulario();
+      this.mensajeExito = '¡Tarea guardada correctamente!';
+    },
+    error: (err) => {
+    
+      console.log('Cuerpo del error:', err.error);// Esto es para ver qué información está llegando en el error
+      this.errorTarea = err.error?.message || 'Error al guardar la tarea';
     }
-
-    // crea el objeto tarea con los datos del formulario
-    const tarea: Tarea = {
-      id: this.contadorId++,
-      // ++ aumenta el contador en 1 cada vez que se crea una tarea
-      title: this.nuevaTarea.title,
-      description: this.nuevaTarea.description,
-      status: this.nuevaTarea.status,
-      priority: this.nuevaTarea.priority,
-      dueDate: this.nuevaTarea.dueDate,
-      categoryName: this.nuevaTarea.categoryName
-    };
-
-    this.tareas.push(tarea);
-    // push agrega la nueva tarea al final de la lista
-
-    // limpia el formulario despues de crear
+  });
+}
+//aqui se llama al servicio para eliminar la tarea,
+//  se maneja la respuesta para actualizar la lista de tareas y mostrar mensajes de error si no se pudo eliminar
+  eliminarTarea(id: number): void {
+    this.tasksService.eliminar(id).subscribe({
+      next: () => {
+        this.tasks = this.tasks.filter(t => t.id !== id);
+      },
+      error: () => {
+        this.errorTarea = 'No se pudo eliminar la tarea';
+      }
+    });
+  }
+//se resetea el formulario para crear una nueva tarea
+  resetFormulario() {
     this.nuevaTarea = {
       title: '',
       description: '',
-      status: 'pending',
-      priority: 'medium',
+      status: 'Pendiente',
+      priority: 'Media',
       dueDate: '',
-      categoryName: ''
+      categoryId: null
     };
 
-    this.mensajeExito = 'Tarea creada!';
+
   }
 
-  // funcion que devuelve la clase css segun el status de la tarea
-  getStatusClass(status: string): string {
-    if (status === 'pending') return 'status-pending';
-    if (status === 'in_progress') return 'status-in-progress';
-    if (status === 'completed') return 'status-completed';
+
+ getStatusClass(status: string): string {//
+    const s = status.toLowerCase();
+    if (s === 'pendiente') return 'status-pending';
+    if (s === 'en progreso') return 'status-in-progress';
+    if (s === 'completado') return 'status-completed';
     return '';
   }
 
-  // funcion que devuelve la clase css segun la prioridad de la tarea
-  getPriorityClass(priority: string): string {
-    if (priority === 'low') return 'priority-low';
-    if (priority === 'medium') return 'priority-medium';
-    if (priority === 'high') return 'priority-high';
+//aqui se asignan clases CSS según la prioridad de la tarea para mostrar colores diferentes en el template
+//esto es para mejorar la visualización de las tareas según su prioridad
+getPriorityClass(priority: string): string {
+    const p = priority.toLowerCase();
+    if (p === 'baja') return 'priority-low';
+    if (p === 'media') return 'priority-medium';
+    if (p === 'alta') return 'priority-high';
     return '';
   }
 
-  // funcion que se ejecuta cuando el usuario hace clic en Eliminar
-  eliminarTarea(id: number): void {
-    this.tareas = this.tareas.filter(tarea => tarea.id !== id);
-    // filter devuelve solo las tareas que NO tienen ese id
-    // es decir elimina la que si tiene ese id
-  }
+
 }

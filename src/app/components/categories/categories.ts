@@ -1,12 +1,17 @@
+//esta clase es el componente de categorias, aqui se muestra la logica para crear, eliminar y mostrar las categorias del usuario. 
+// Tambien se maneja el estado de carga y los mensajes de error o exito.
+
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // necesario para ngModel
 import { CommonModule } from '@angular/common'; // necesario para *ngIf y *ngFor
 import { CategoriesService } from '../../services/categories';
 // CategoriesService es para comunicarse con el backend de categorias
-import { Router } from '@angular/router';
-// Router es para redirigir al usuario si no esta autenticado
 
-// interfaz que define como es una categoria
+// Router es para redirigir al usuario si no esta autenticado
+// RouterModule es para usar las directivas de routerLink en el template
+import { Router, RouterModule } from '@angular/router';
+
+// interface es una estructura de datos que define las propiedades de una categoria
 // es como el molde de datos de una categoria
 interface Categoria {
   id: string;          // identificador unico de la categoria (uuid del backend)
@@ -17,10 +22,11 @@ interface Categoria {
 }
 
 @Component({
-  selector: 'app-categories',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
+  selector: 'app-categories',// selector es el nombre de la etiqueta HTML que representa este componente
+  standalone: true,// standalone: true indica que este componente no depende de un modulo, se puede usar directamente
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './categories.html',
+  
   styleUrls: ['./categories.css']
 })
 export class CategoriesComponent implements OnInit {
@@ -46,7 +52,7 @@ export class CategoriesComponent implements OnInit {
     private router: Router // inyecta el router para redirigir si no hay sesion
   ) {}
 
-  // ngOnInit se ejecuta automaticamente cuando el componente carga
+  // ngOnInit se ejecuta automaticamente cuando el componente carga.
   // aqui se cargan las categorias del backend al entrar a la pagina
   ngOnInit(): void {
     this.cargarCategorias();
@@ -59,7 +65,7 @@ export class CategoriesComponent implements OnInit {
     this.categoriesService.obtenerTodas().subscribe({
 
       next: (data) => {
-      // next se ejecuta cuando el backend responde con exito
+      // next es para manejar la respuesta exitosa del backend, data es el array de categorias que devuelve el backend
         this.categorias = data;
         // llena la lista con las categorias reales del backend
         this.cargando = false;
@@ -98,6 +104,7 @@ export class CategoriesComponent implements OnInit {
 
     this.categoriesService.crear(datos).subscribe({
 
+    
       next: (categoriaCreada) => {
       // next se ejecuta cuando el backend crea la categoria exitosamente
         this.categorias.push(categoriaCreada);

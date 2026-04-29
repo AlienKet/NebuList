@@ -1,7 +1,7 @@
 
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app';
-// importamos el componente principal para poder probarlo
+// se importa el componente principal para poder probarlo
 
 describe('AppComponent', () => {
 // describe agrupa las pruebas relacionadas con AppComponent
@@ -10,7 +10,7 @@ describe('AppComponent', () => {
   // beforeEach se ejecuta antes de cada prueba para preparar el entorno
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      // registramos el AppComponent para poder probarlo
+      // se registra el AppComponent para poder probarlo
     }).compileComponents();
   });
 

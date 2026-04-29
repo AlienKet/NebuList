@@ -290,7 +290,23 @@
   letter-spacing: 1px;
   white-space: nowrap;
 }
+/* boton de regresar a la vista principal */
+.btn-regresar {
+  background: transparent;
+  color: #00ccff; /* O el color neón que estés usando */
+  border: 1px solid #00ccff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-family: 'Orbitron', sans-serif; /* Si usas esa fuente espacial */
+  transition: 0.3s;
+}
 
+.btn-regresar:hover {
+  background: rgba(9, 226, 17, 0.895);
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
 /* efecto hover del boton eliminar */
 .btn-eliminar:hover {
   background: rgba(255, 68, 68, 0.1);

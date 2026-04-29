@@ -3,7 +3,9 @@
 
   <!-- caja principal -->
   <div class="main-box">
-
+<button class="btn-regresar" routerLink="/home">
+      ⬅ Volver a la pagina principal
+    </button>
     <!-- titulo de la vista -->
     <h1 class="page-title">Mis Categorias</h1>
 
@@ -45,6 +47,7 @@
         <label>Icono</label>
         <input 
           type="text" 
+
           [(ngModel)]="nuevaCategoria.icon" />
       </div>
 
@@ -68,7 +71,7 @@
 
       <!-- mensaje si no hay categorias -->
       <p class="empty-msg" *ngIf="categorias.length === 0">
-        No tienes categorias aun
+        No hay Categorias Todavia
       </p>
       <!-- length === 0 verifica que la lista este vacia -->
 

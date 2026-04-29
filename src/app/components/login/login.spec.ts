@@ -1,12 +1,13 @@
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login';
 
-describe('Login', () => {
+describe('Login', () => {//aqui se define el bloque de pruebas para el componente LoginComponent
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async () => {//se configura el entorno de pruebas para el componente LoginComponent utilizando TestBed
     await TestBed.configureTestingModule({
       imports: [LoginComponent]
     })
