@@ -38,7 +38,7 @@
             <div class="task-actions">
               <button class="btn-action progress" (click)="cambiarEstado(tarea, 'En Progreso')" title="Empezar">Empezar</button>
               <button class="btn-action complete" (click)="cambiarEstado(tarea, 'Completado')" title="Terminar">Terminar</button>
-              <button class="btn-action delete" (click)="eliminarTareaDesdeHome(tarea.id)" style="background: #ff0055; color: white;" title="Eliminar">Eliminar</button>
+              <button class="btn-action delete" (click)="eliminarTareaDesdeHome(tarea.id)" title="Eliminar">Eliminar</button>
             </div>   
           </div>
           
@@ -56,8 +56,8 @@
           <span class="task-date danger-date">Vence: {{ tarea.dueDate | date:'shortDate' }}</span>
           
           <div class="task-actions">
-            <button class="btn-action complete" (click)="cambiarEstado(tarea, 'Completado')" title="Terminar">Terminar</button>
-            <button class="btn-action delete" (click)="eliminarTareaDesdeHome(tarea.id)" style="background: #ff0055; color: white;" title="Eliminar">Eliminar</button>
+            <button class="btn-action complete-alert" (click)="cambiarEstado(tarea, 'Completado')" title="Terminar">Terminar</button>
+            <button class="btn-action delete" (click)="eliminarTareaDesdeHome(tarea.id)" title="Eliminar">Eliminar</button>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
           <span class="task-status" style="display: block; margin-bottom: 8px;">Estado: {{ tarea.status }}</span>
           
           <div class="task-actions">
-            <button class="btn-action delete" (click)="eliminarTareaDesdeHome(tarea.id)" style="background: #ff0055; color: white; width: 100%;" title="Eliminar">
+            <button class="btn-action delete-history" (click)="eliminarTareaDesdeHome(tarea.id)" title="Eliminar">
               Eliminar del Historial
             </button>
           </div>

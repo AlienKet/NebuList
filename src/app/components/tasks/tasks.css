@@ -36,6 +36,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
 }
 
 /* titulo del formulario y de la lista */
@@ -72,11 +73,13 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 1rem;
   outline: none;
+  transition: all 0.3s ease;
 }
 
 /* borde verde al enfocar el input */
 .input-group input:focus {
   border-color: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
 }
 
 /* placeholder del input */
@@ -95,11 +98,13 @@
   font-size: 1rem;
   outline: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* borde verde al enfocar el select */
 .input-group select:focus {
   border-color: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
 }
 
 /* hace que el calendario del input date salga oscuro */
@@ -120,12 +125,14 @@
   cursor: pointer;
   letter-spacing: 2px;
   text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 /* efecto hover del boton principal */
 .btn-principal:hover {
   background: linear-gradient(135deg, #1a6a30, #39ff14);
   color: #000;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
 }
 
 /* mensaje de error */
@@ -159,6 +166,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
 }
 
 /* mensaje cuando no hay tareas */
@@ -177,6 +185,7 @@
   border-radius: 8px;
   padding: 14px 16px;
   gap: 12px;
+  background: rgba(0, 5, 2, 0.5);
 }
 
 /* contenedor de la informacion de la tarea */
@@ -192,11 +201,12 @@
   color: #39ff14;
   font-size: 1rem;
   font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
 }
 
 /* descripcion de la tarea */
 .task-desc {
-  color: #5a8a6a;
+  color: #a0c0a8;
   font-size: 0.85rem;
 }
 
@@ -230,9 +240,9 @@
 
 /* azul para en progreso */
 .status-in-progress {
-  background: rgba(0, 150, 255, 0.1);
-  border: 1px solid #0096ff;
-  color: #0096ff;
+  background: rgba(0, 204, 255, 0.1);
+  border: 1px solid #00ccff;
+  color: #00ccff;
 }
 
 /* verde para completado */
@@ -244,9 +254,9 @@
 
 /*azul para prioridad baja */
 .priority-low {
-  background: rgba(90, 138, 106, 0.1);
-  border: 1px solid #5a8a6a;
-  color: #1dc9f8;
+  background: rgba(0, 204, 255, 0.05);
+  border: 1px solid #00ccff;
+  color: #00ccff;
 }
 
 /* naranja para prioridad media */
@@ -258,9 +268,9 @@
 
 /* rojo para prioridad alta */
 .priority-high {
-  background: rgba(255, 68, 68, 0.1);
-  border: 1px solid #ff4444;
-  color: #ff4444;
+  background: rgba(255, 0, 85, 0.1);
+  border: 1px solid #ff0055;
+  color: #ff0055;
 }
 
 /* etiqueta de fecha */
@@ -280,16 +290,26 @@
 /* boton de eliminar */
 .btn-eliminar {
   background: transparent;
-  border: 1px solid #ff4444;
+  border: 1px solid #ff0055;
   border-radius: 6px;
-  color: #ff4444;
-  font-family: 'Rajdhani', sans-serif;
+  color: #ff0055;
+  font-family: 'Orbitron', sans-serif;
   font-size: 0.85rem;
+  font-weight: bold;
   padding: 6px 12px;
   cursor: pointer;
   letter-spacing: 1px;
   white-space: nowrap;
+  transition: all 0.3s ease;
 }
+
+/* efecto hover del boton eliminar */
+.btn-eliminar:hover {
+  background: #ff0055;
+  color: #fff;
+  box-shadow: 0 0 10px #ff0055;
+}
+
 /* boton de regresar a la vista principal */
 .btn-regresar {
   background: transparent;
@@ -304,10 +324,47 @@
 }
 
 .btn-regresar:hover {
-  background: rgba(9, 226, 17, 0.895);
-  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+  background: rgba(0, 204, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
 }
-/* efecto hover del boton eliminar */
-.btn-eliminar:hover {
-  background: rgba(255, 68, 68, 0.1);
+
+/* Clases auxiliares para empaquetar layouts sin estilos inline */
+.form-actions-layout {
+  display: flex; 
+  gap: 10px;
+}
+
+.item-actions-layout {
+  display: flex; 
+  gap: 8px; 
+  align-items: center;
+}
+
+.btn-cancelar {
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #ccc;
+  font-family: 'Orbitron', sans-serif;
+  padding: 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.btn-editar-item {
+  background: transparent;
+  border: 1px solid #39ff14;
+  color: #39ff14;
+  border-radius: 6px;
+  padding: 5px 10px; 
+  font-size: 14px;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-editar-item:hover {
+  background: #39ff14;
+  color: #000;
+  box-shadow: 0 0 10px #39ff14;
 }

@@ -1,1 +1,8 @@
 
+:root {
+  --neon-green: #00ff33;      /* verde*/
+  --neon-green-glow: 0 0 12px #00ff33; /* El efecto de luces neón */
+  --bg-dark: #000000;         /* Fondo oscuro absoluto */
+  --card-bg: #040d06;         /* Fondo ligeramente más claro para las tarjetas */
+  --border-color: #113318;    /* Bordes sutiles para delimitar zonas */
+}

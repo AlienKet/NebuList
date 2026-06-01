@@ -1,4 +1,3 @@
-
 /*contenedor principal del home*/
 .nebula-container {
   min-height: 100vh;
@@ -86,36 +85,42 @@
 
 /* Cada columna del dashboard */
 .panel-section {
-  background: rgba(0, 20, 10, 0.85);
+  background: rgba(0, 15, 8, 0.9);
   border: 1px solid #1a4a2a;
   border-radius: 16px;
   padding: 24px;
   min-height: 400px;
+  box-shadow: inset 0 0 15px rgba(57, 255, 20, 0.05);
 }
 
 /* Tarjetas de las tareas */
 .task-card {
-  background: rgba(0, 30, 15, 0.8);
+  background: rgba(0, 25, 12, 0.8);
   border-left: 4px solid #39ff14;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 12px;
-  transition: transform 0.2s;
+  transition: all 0.2s ease;
+  border-top: 1px solid rgba(57, 255, 20, 0.1);
+  border-right: 1px solid rgba(57, 255, 20, 0.1);
+  border-bottom: 1px solid rgba(57, 255, 20, 0.1);
 }
 
 .task-card:hover {
   transform: translateX(5px);
-  background: rgba(0, 40, 20, 0.9);
+  background: rgba(0, 35, 18, 0.9);
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.2);
 }
 
 .task-title {
   color: #fff;
   font-size: 1.1rem;
   margin: 0 0 8px 0;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .task-desc {
-  color: #5a8a6a;
+  color: #a0c0a8;
   font-size: 0.9rem;
   margin: 0 0 12px 0;
 }
@@ -136,9 +141,10 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   padding: 8px;
   border-radius: 8px;
+  border: 1px solid rgba(57, 255, 20, 0.15);
 }
 
 .category-color {
@@ -158,16 +164,26 @@
 /*Estilos para Tareas por Vencer*/
 .alert-section {
   border-color: #ffaa00; 
+  box-shadow: inset 0 0 15px rgba(255, 170, 0, 0.05);
 }
 
 .alert-title {
   color: #ffaa00;
   border-bottom-color: rgba(255, 170, 0, 0.3);
+  text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
 }
 
 .task-alert {
   border-left-color: #ffaa00;
-  background: rgba(40, 20, 0, 0.8);
+  background: rgba(30, 15, 0, 0.8);
+  border-top: 1px solid rgba(255, 170, 0, 0.1);
+  border-right: 1px solid rgba(255, 170, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 170, 0, 0.1);
+}
+
+.task-alert:hover {
+  background: rgba(45, 22, 0, 0.9);
+  box-shadow: 0 0 12px rgba(255, 170, 0, 0.3);
 }
 
 .danger-date {
@@ -176,7 +192,7 @@
 
 /* estilos para la sección de historial */
 .history-section {
-  border-color: #555;
+  border-color: #444;
 }
 
 .history-title {
@@ -186,8 +202,15 @@
 /* Estilos para tareas completadas */
 .task-completed {
   border-left-color: #555;
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(15, 15, 15, 0.8);
   opacity: 0.7; 
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.task-completed:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .task-completed .task-title {
@@ -214,14 +237,14 @@
 
 .btn-regresar:hover {
   background: rgba(0, 204, 255, 0.1);
-  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
 }
 /* Botón de cerrar sesión */
 .btn-logout {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(255, 68, 68, 0.2);
+  background: rgba(255, 68, 68, 0.1);
   border: 1px solid #ff4444;
   color: #ff4444;
   padding: 8px 15px;
@@ -229,6 +252,7 @@
   cursor: pointer;
   transition: 0.3s;
   font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .btn-logout:hover {
@@ -251,18 +275,69 @@
 }
 /* Botones de acción para cambiar estado de las tareas */
 .btn-action {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   cursor: pointer;
-  padding: 4px 8px;
-  transition: 0.2s;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: bold;
 }
 /* Colores específicos para cada acción */
 .btn-action:hover {
-  transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
 }
 /* Botón para marcar como en progreso */
-.btn-action.progress:hover { border-color: #3498db; }
-.btn-action.complete:hover { border-color: #2ecc71; }
+.btn-action.progress {
+  border-color: #00ccff;
+  color: #00ccff;
+}
+.btn-action.progress:hover {
+  background: #00ccff;
+  color: #000;
+  box-shadow: 0 0 10px #00ccff;
+}
+
+.btn-action.complete {
+  border-color: #39ff14;
+  color: #39ff14;
+}
+.btn-action.complete:hover {
+  background: #39ff14;
+  color: #000;
+  box-shadow: 0 0 10px #39ff14;
+}
+
+.btn-action.complete-alert {
+  border-color: #39ff14;
+  background: #000;
+  color: #39ff14;
+}
+.btn-action.complete-alert:hover {
+  background: #39ff14;
+  color: #000;
+  box-shadow: 0 0 10px #39ff14;
+}
+
+.btn-action.delete {
+  border-color: #ff0055;
+  color: #ff0055;
+}
+.btn-action.delete:hover {
+  background: #ff0055;
+  color: #fff;
+  box-shadow: 0 0 10px #ff0055;
+}
+
+.btn-action.delete-history {
+  border-color: #ff0055;
+  color: #ff0055;
+  width: 100%;
+}
+.btn-action.delete-history:hover {
+  background: #ff0055;
+  color: #fff;
+  box-shadow: 0 0 10px #ff0055;
+}

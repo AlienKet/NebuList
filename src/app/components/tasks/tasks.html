@@ -66,11 +66,11 @@
       <p class="error-msg" *ngIf="errorTarea">{{ errorTarea }}</p>
       <p class="success-msg" *ngIf="mensajeExito">{{ mensajeExito }}</p>
 
-      <div style="display: flex; gap: 10px;">
+      <div class="form-actions-layout">
         <button class="btn-principal" (click)="editando ? actualizarTarea() : crearTarea()">
           {{ editando ? 'Guardar Cambios' : 'Crear Tarea' }}
         </button>
-        <button class="btn-eliminar" *ngIf="editando" (click)="cancelarEdicion()" style="background: #555;">
+        <button class="btn-cancelar" *ngIf="editando" (click)="cancelarEdicion()">
           Cancelar
         </button>
       </div>
@@ -107,8 +107,8 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button class="btn-principal" style="padding: 5px 10px; font-size: 14px;" (click)="seleccionarParaEditar(task)">
+        <div class="item-actions-layout">
+          <button class="btn-editar-item" (click)="seleccionarParaEditar(task)">
             Editar
           </button>
           <button class="btn-eliminar" (click)="eliminarTarea(task.id)">
