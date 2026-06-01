@@ -3,7 +3,7 @@ ng serve
 
 https://htmlcolorcodes.com/
 
-https://es.piliapp.com/emoji/list/
+https://emojiterra.com/es/
 
 "username": "Alien",
   "email": "alien@gmail.com",

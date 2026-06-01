@@ -1,30 +1,23 @@
-<!-- vista principal de categorias -->
 <div class="nebula-container">
 
-  <!-- caja principal -->
   <div class="main-box">
-<button class="btn-regresar" routerLink="/home">
+    <button class="btn-regresar" routerLink="/home">
       ⬅ Volver a la pagina principal
     </button>
-    <!-- titulo de la vista -->
     <h1 class="page-title">Mis Categorias</h1>
 
-    <!-- formulario para crear una nueva categoria -->
     <div class="form-box">
 
-      <h2 class="form-title">Nueva Categoria</h2>
+      <h2 class="form-title">{{ editando ? 'Editar Categoría' : 'Nueva Categoria' }}</h2>
 
-      <!-- campo de nombre -->
       <div class="input-group">
         <label>Nombre</label>
         <input 
           type="text" 
           placeholder="Nombre de la categoria" 
           [(ngModel)]="nuevaCategoria.name" />
-          <!-- ngModel conecta el input con la variable nuevaCategoria.name -->
       </div>
 
-      <!-- campo de descripcion -->
       <div class="input-group">
         <label>Descripcion</label>
         <input 
@@ -33,7 +26,6 @@
           [(ngModel)]="nuevaCategoria.description" />
       </div>
 
-      <!-- campo de color -->
       <div class="input-group">
         <label>Color</label>
         <input 
@@ -42,57 +34,53 @@
           [(ngModel)]="nuevaCategoria.color" />
       </div>
 
-      <!-- campo de icono -->
       <div class="input-group">
         <label>Icono</label>
         <input 
           type="text" 
-
           [(ngModel)]="nuevaCategoria.icon" />
       </div>
 
-      <!-- mensaje de error si algo falla -->
       <p class="error-msg" *ngIf="errorCategoria">{{ errorCategoria }}</p>
 
-      <!-- mensaje de exito si se creo bien -->
       <p class="success-msg" *ngIf="mensajeExito">{{ mensajeExito }}</p>
 
-      <!-- boton para crear la categoria -->
-      <button class="btn-principal" (click)="crearCategoria()">
-        Crear Categoria
-      </button>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn-principal" (click)="editando ? actualizarCategoria() : crearCategoria()">
+          {{ editando ? 'Guardar Cambios' : 'Crear Categoria' }}
+        </button>
+        <button class="btn-eliminar" *ngIf="editando" (click)="cancelarEdicion()" style="background: #555;">
+          Cancelar
+        </button>
+      </div>
 
     </div>
 
-    <!-- lista de categorias -->
     <div class="list-box">
 
       <h2 class="form-title">Lista de Categorias</h2>
 
-      <!-- mensaje si no hay categorias -->
       <p class="empty-msg" *ngIf="categorias.length === 0">
         No hay Categorias Todavia
       </p>
-      <!-- length === 0 verifica que la lista este vacia -->
 
-      <!-- recorre la lista de categorias y muestra cada una -->
       <div class="category-item" *ngFor="let categoria of categorias">
-      <!-- *ngFor es como un for, recorre cada elemento de la lista -->
 
-        <!-- informacion de la categoria -->
         <div class="category-info">
           <span class="category-icon">{{ categoria.icon }}</span>
-          <!-- muestra el icono de la categoria -->
           <span class="category-color" [style.background]="categoria.color"></span>
           <span class="category-name">{{ categoria.name }}</span>
           <span class="category-desc">{{ categoria.description }}</span>
-          <!-- muestra la descripcion de la categoria -->
         </div>
 
-        <!-- boton para eliminar la categoria -->
-        <button class="btn-eliminar" (click)="eliminarCategoria(categoria.id)">
-          Eliminar
-        </button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-principal" style="padding: 5px 10px; font-size: 14px;" (click)="seleccionarParaEditar(categoria)">
+            Editar
+          </button>
+          <button class="btn-eliminar" (click)="eliminarCategoria(categoria.id)">
+            Eliminar
+          </button>
+        </div>
 
       </div>
 

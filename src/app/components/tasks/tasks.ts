@@ -17,10 +17,8 @@ interface Task {
 
 @Component({
   selector: 'app-tasks',
-  standalone: true,//standalone es para que no sea necesario declararlo en un módulo, se puede usar directamente
-  imports: [FormsModule, CommonModule, RouterModule],//importamos FormsModule para usar ngModel en el formulario
-  // CommonModule para usar *ngIf y *ngFor, 
-  // RouterModule para usar routerLink en el template
+  standalone: true,
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './tasks.html',
   styleUrls: ['./tasks.css']
 })
@@ -38,6 +36,10 @@ export class TasksComponent implements OnInit {
     categoryId: null as number | null
   };
 
+  // Variables para la edicion
+  editando: boolean = false;
+  tareaEditandoId: number | null = null;
+
   errorTarea: string = '';
   mensajeExito: string = '';
   cargando: boolean = false;
@@ -48,97 +50,144 @@ export class TasksComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {//ngOnInit es el método que se ejecuta al cargar el componente, aquí se llama a cargarDatos para obtener las tareas y 
-  // categorías desde el backend
+  ngOnInit(): void {
     this.cargarDatos();
   }
 
   cargarDatos(): void {
     this.cargando = true;
     this.categoriesService.obtenerTodas().subscribe({
-      next: (cats) => {//cats es para almacenar las categorías obtenidas del backend
+      next: (cats) => {
         this.categories = cats;
         this.tasksService.obtenerTodas().subscribe({
-          next: (ts) => {//ts es para almacenar las tareas obtenidas del backend
+          next: (ts) => {
             this.tasks = ts;
             this.cargando = false;
           },
           error: () => this.cargando = false
         });
       },
-      error: (err) => {// Si el error es 401, redirigimos al login
-        //el error 401 significa que el usuario no está autenticado, por lo que se redirige al login para que inicie sesión y 
-        // obtenga un token válido
+      error: (err) => {
         if (err.status === 401) this.router.navigate(['']);
         this.cargando = false;
       }
     });
   }
 
- crearTarea(): void {
-  this.errorTarea = '';
-  this.mensajeExito = '';
+  crearTarea(): void {
+    this.errorTarea = '';
+    this.mensajeExito = '';
 
-  if (!this.nuevaTarea.title) {
-    this.errorTarea = 'El titulo es obligatorio';
-    return;
-  }
-
-  // aqui se construye el payload para enviar al backend, se manejan los campos opcionales como dueDate y 
-  // categoryId para evitar problemas de formato o valores no 
-  //payload significa la carga útil, es decir, los datos que se van a enviar al backend para crear una nueva tarea
-  const payload: any = {
-    title: this.nuevaTarea.title,
-    description: this.nuevaTarea.description || '',
-    status: this.nuevaTarea.status,
-    priority: this.nuevaTarea.priority
-  };
-
-  // Manejo de fecha
-  if (this.nuevaTarea.dueDate) {
-    //  Esto es para evitar enviar una fecha vacía o mal formateada
-    payload.dueDate = this.nuevaTarea.dueDate;
-  } else {
-    // Si el backend no acepta null, es mejor no enviar la propiedad si está vacía
-    payload.dueDate = null; 
-  }
-
-  // Manejo de categoria
-  // Si el valor es "null" (como string desde el select) o null real, lo enviamos como null
-  if (this.nuevaTarea.categoryId && this.nuevaTarea.categoryId.toString() !== 'null') {
-    payload.categoryId = Number(this.nuevaTarea.categoryId);
-  } else {
-    payload.categoryId = null;
-  }
-
-  //aqui se llama al servicio para crear la tarea, se maneja la respuesta para actualizar la lista de tareas y 
-  // mostrar mensajes de éxito o error
-  this.tasksService.crear(payload as any).subscribe({
-    next: (tareaCreada) => {
-      this.tasks.push(tareaCreada as unknown as Task);
-      this.resetFormulario();
-      this.mensajeExito = '¡Tarea guardada correctamente!';
-    },
-    error: (err) => {
-    
-      console.log('Cuerpo del error:', err.error);// Esto es para ver qué información está llegando en el error
-      this.errorTarea = err.error?.message || 'Error al guardar la tarea';
+    if (!this.nuevaTarea.title) {
+      this.errorTarea = 'El titulo es obligatorio';
+      return;
     }
-  });
-}
-//aqui se llama al servicio para eliminar la tarea,
-//  se maneja la respuesta para actualizar la lista de tareas y mostrar mensajes de error si no se pudo eliminar
+
+    const payload: any = {
+      title: this.nuevaTarea.title,
+      description: this.nuevaTarea.description || '',
+      status: this.nuevaTarea.status,
+      priority: this.nuevaTarea.priority
+    };
+
+    if (this.nuevaTarea.dueDate) {
+      payload.dueDate = this.nuevaTarea.dueDate;
+    } else {
+      payload.dueDate = null; 
+    }
+
+    if (this.nuevaTarea.categoryId && this.nuevaTarea.categoryId.toString() !== 'null') {
+      payload.categoryId = Number(this.nuevaTarea.categoryId);
+    } else {
+      payload.categoryId = null;
+    }
+
+    this.tasksService.crear(payload).subscribe({
+      next: (tareaCreada) => {
+        this.tasks.push(tareaCreada as unknown as Task);
+        this.resetFormulario();
+        this.mensajeExito = '¡Tarea guardada correctamente!';
+      },
+      error: (err) => {
+        console.log('Cuerpo del error:', err.error);
+        this.errorTarea = err.error?.message || 'Error al guardar la tarea';
+      }
+    });
+  }
+
+  // Carga los datos al formulario para editar
+  seleccionarParaEditar(task: Task): void {
+    this.editando = true;
+    this.tareaEditandoId = task.id;
+    this.nuevaTarea = {
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      priority: task.priority,
+      // Se extrae solo yyyy-MM-dd si viene con zona horaria completa
+      dueDate: task.dueDate ? task.dueDate.substring(0, 10) : '',
+      categoryId: task.categoryId
+    };
+    this.errorTarea = '';
+    this.mensajeExito = '';
+  }
+
+  // Actualiza la tarea en base de datos
+  actualizarTarea(): void {
+    if (!this.tareaEditandoId) return;
+
+    this.errorTarea = '';
+    this.mensajeExito = '';
+
+    if (!this.nuevaTarea.title) {
+      this.errorTarea = 'El título es obligatorio';
+      return;
+    }
+
+    const payload: any = {
+      title: this.nuevaTarea.title,
+      description: this.nuevaTarea.description || '',
+      status: this.nuevaTarea.status,
+      priority: this.nuevaTarea.priority,
+      dueDate: this.nuevaTarea.dueDate || null,
+      categoryId: this.nuevaTarea.categoryId && this.nuevaTarea.categoryId.toString() !== 'null' 
+        ? Number(this.nuevaTarea.categoryId) 
+        : null
+    };
+
+    this.tasksService.actualizar(this.tareaEditandoId, payload).subscribe({
+      next: (tareaActualizada) => {
+        const index = this.tasks.findIndex(t => t.id === this.tareaEditandoId);
+        if (index !== -1) {
+          this.tasks[index] = tareaActualizada as unknown as Task;
+        }
+        this.cancelarEdicion();
+        this.mensajeExito = '¡Tarea actualizada correctamente!';
+      },
+      error: (err) => {
+        this.errorTarea = err.error?.message || 'Error al actualizar la tarea';
+      }
+    });
+  }
+
+  cancelarEdicion(): void {
+    this.editando = false;
+    this.tareaEditandoId = null;
+    this.resetFormulario();
+  }
+
   eliminarTarea(id: number): void {
     this.tasksService.eliminar(id).subscribe({
       next: () => {
         this.tasks = this.tasks.filter(t => t.id !== id);
+        if (this.tareaEditandoId === id) this.cancelarEdicion();
       },
       error: () => {
         this.errorTarea = 'No se pudo eliminar la tarea';
       }
     });
   }
-//se resetea el formulario para crear una nueva tarea
+
   resetFormulario() {
     this.nuevaTarea = {
       title: '',
@@ -148,12 +197,9 @@ export class TasksComponent implements OnInit {
       dueDate: '',
       categoryId: null
     };
-
-
   }
 
-
- getStatusClass(status: string): string {//
+  getStatusClass(status: string): string {
     const s = status.toLowerCase();
     if (s === 'pendiente') return 'status-pending';
     if (s === 'en progreso') return 'status-in-progress';
@@ -161,15 +207,11 @@ export class TasksComponent implements OnInit {
     return '';
   }
 
-//aqui se asignan clases CSS según la prioridad de la tarea para mostrar colores diferentes en el template
-//esto es para mejorar la visualización de las tareas según su prioridad
-getPriorityClass(priority: string): string {
+  getPriorityClass(priority: string): string {
     const p = priority.toLowerCase();
     if (p === 'baja') return 'priority-low';
     if (p === 'media') return 'priority-medium';
     if (p === 'alta') return 'priority-high';
     return '';
   }
-
-
 }
