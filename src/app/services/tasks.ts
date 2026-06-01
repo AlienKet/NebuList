@@ -6,7 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class TasksService {
 
-  private apiUrl = 'http://localhost:3000/api/tasks';
+  private apiUrl = 'https://back-end-nebu-list.onrender.com/api/tasks';
   // URL base del backend para las rutas de tareas
 
   constructor(private http: HttpClient) {}

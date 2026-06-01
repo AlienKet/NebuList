@@ -1,7 +1,7 @@
 // este interceptor agrega el token JWT automaticamente en cada peticion HTTP
 
 import { HttpInterceptorFn } from '@angular/common/http';
-// HttpInterceptorFn es el tipo de interceptor que usa Angular 17+
+// HttpInterceptorFn es el tipo de interceptor que usa Angular 
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 // req: la peticion HTTP que se va a enviar

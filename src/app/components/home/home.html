@@ -29,13 +29,19 @@
             <span class="category-color" [style.background]="grupo.categoria.color"></span>
             <span class="category-name" [style.color]="grupo.categoria.color">{{ grupo.categoria.name }}</span>
           </div>
-
+<!-- Tareas dentro de cada categoria -->
           <div class="task-card" *ngFor="let tarea of grupo.tareas">
             <h3 class="task-title">{{ tarea.title }}</h3>
             <p class="task-desc">{{ tarea.description }}</p>
             <span class="task-date">Vence: {{ tarea.dueDate | date:'shortDate' }}</span>
+            <!-- Botones de acción para Pendientes -->
+  <div class="task-actions">
+    <button class="btn-action progress" (click)="cambiarEstado(tarea, 'En Progreso')" title="Empezar">🏃</button>
+    <button class="btn-action complete" (click)="cambiarEstado(tarea, 'Completado')" title="Terminar">✅</button>
+  </div>   
           </div>
 
+          
         </div>
       </div>
 
@@ -43,11 +49,16 @@
         <h2 class="form-title alert-title">⚠️ Proximas a Vencer</h2>
         
         <p class="empty-msg" *ngIf="tareasPorVencer.length === 0">No hay tareas proximas a vencer</p>
-
+<!-- Tareas por vencer sin agrupar -->
         <div class="task-card task-alert" *ngFor="let tarea of tareasPorVencer">
           <h3 class="task-title">{{ tarea.title }}</h3>
           <p class="task-desc">{{ tarea.description }}</p>
           <span class="task-date danger-date">Vence: {{ tarea.dueDate | date:'shortDate' }}</span>
+          
+         <!-- Botón para finalizar desde el panel central -->
+  <div class="task-actions">
+    <button class="btn-action complete" (click)="cambiarEstado(tarea, 'Completado')" title="Terminar">✅</button>
+  </div>
         </div>
       </div>
 
@@ -55,7 +66,7 @@
         <h2 class="form-title history-title">✅ Historial</h2>
         
         <p class="empty-msg" *ngIf="tareasCompletadasOVencidas.length === 0">Aun no hay historial</p>
-
+<!-- Tareas completadas o vencidas sin agrupar -->
         <div class="task-card task-completed" *ngFor="let tarea of tareasCompletadasOVencidas">
           <h3 class="task-title">{{ tarea.title }}</h3>
           <span class="task-status">Estado: {{ tarea.status }}</span>

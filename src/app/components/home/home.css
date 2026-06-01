@@ -242,3 +242,27 @@
   position: relative;
   min-height: 100vh;
 }
+/* Estilos para los botones de acción en las tareas */
+.task-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+/* Botones de acción para cambiar estado de las tareas */
+.btn-action {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: 0.2s;
+}
+/* Colores específicos para cada acción */
+.btn-action:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+}
+/* Botón para marcar como en progreso */
+.btn-action.progress:hover { border-color: #3498db; }
+.btn-action.complete:hover { border-color: #2ecc71; }

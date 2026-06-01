@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
 
-  private apiUrl = 'http://localhost:3000/api/categories';
+  private apiUrl = 'https://back-end-nebu-list.onrender.com/api/categories';
   // url base del backend para las rutas de categorias
 
   constructor(private http: HttpClient) {}

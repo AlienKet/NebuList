@@ -67,6 +67,18 @@ cerrarSesion(): void {
     this.router.navigate(['/tasks']); 
   }
 
+  // Cambia el estado de una tarea y recarga los datos
+  cambiarEstado(tarea: any, nuevoEstado: string): void {
+    // Solo se envia el campo status para actualizar
+    this.tasksService.actualizar(tarea.id, { status: nuevoEstado }).subscribe({
+      next: () => {
+        // Recarga los datos para que la tarea se mueva de columna automáticamente
+        this.cargarDatosReales();
+      },
+      error: (err) => console.error('Error al actualizar estado', err)
+    });
+  }
+
   // Obtener los datos
   cargarDatosReales(): void {
     this.cargando = true;
@@ -87,7 +99,8 @@ next: (resultado) => {
 
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0);
-
+// Para calcular el límite de vencimiento, se toma la fecha actual y se le suman 2 días, 
+// luego se ajusta a las 23:59:59 para incluir todo el día de pasado mañana
   const limiteVencimiento = new Date();
   limiteVencimiento.setDate(hoy.getDate() + 2);
   limiteVencimiento.setHours(23, 59, 59, 999);
@@ -98,26 +111,32 @@ next: (resultado) => {
   );
 
   // 2. Proximas a Vencer (Cualquier tarea que venza entre hoy y pasado mañana)
-  this.tareasPorVencer = misTareas.filter(t => {
-    const status = t.status?.toLowerCase();
-    if (!t.dueDate || status === 'completado' || status === 'completed') return false;
-    
-    const fechaTarea = new Date(t.dueDate);
-    // Ajuste para evitar desfases de zona horaria del navegador
-    fechaTarea.setMinutes(fechaTarea.getMinutes() + fechaTarea.getTimezoneOffset());
-    fechaTarea.setHours(0, 0, 0, 0);
+this.tareasPorVencer = misTareas.filter(t => {
+          const s = t.status?.toLowerCase();
+          if (!t.dueDate || s === 'completado' || s === 'completed') return false;
+          //t es una tarea, s es su estado en minúsculas. Si no tiene fecha de vencimiento o ya está completada, no va a esta sección
+// Convertir la fecha de vencimiento a un objeto Date y normalizarlo a la medianoche para comparaciones
+          const fechaTarea = new Date(t.dueDate);
+          fechaTarea.setMinutes(fechaTarea.getMinutes() + fechaTarea.getTimezoneOffset());
+          //getTimezoneOffset() devuelve la diferencia, en minutos, entre la hora local y la hora UTC. 
+          // Al sumar esta diferencia a la fecha, se ajusta la fecha a la hora local del usuario.
+          fechaTarea.setHours(0, 0, 0, 0);
 
-    return fechaTarea >= hoy && fechaTarea <= limiteVencimiento;
-  });
+          // Si el estado es "en progreso", va aquí directo. 
+          // Si es pendiente, revisamos si vence pronto.
+          const esEnProgreso = s === 'en progreso' || s === 'in_progress';
+          const vencePronto = fechaTarea >= hoy && fechaTarea <= limiteVencimiento;
+
+          return esEnProgreso || vencePronto;
+        });
 
   // 3. Pendientes Agrupadas: TODO lo que no este completado ni este por vencer
 const pendientes = misTareas.filter(t => {
-  const s = t.status?.toLowerCase();
-  // Aceptar cualquier variante de pendiente o en progreso
-  const esPendiente = s === 'pendiente' || s === 'en progreso' || s === 'pending' || s === 'in_progress';
-  const noEstaEnVencer = !this.tareasPorVencer.find(tpv => tpv.id === t.id);
-  return esPendiente && noEstaEnVencer;
-});
+          const s = t.status?.toLowerCase();
+          const esPendiente = s === 'pendiente' || s === 'pending';
+          const noEstaEnVencer = !this.tareasPorVencer.find(tpv => tpv.id === t.id);
+          return esPendiente && noEstaEnVencer;
+        });
   
   
   this.tareasPendientesAgrupadas = misCategorias.map(cat => {

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3000/api/accounts';
+  private apiUrl = 'https://back-end-nebu-list.onrender.com/api';
   // url base del backend para las rutas de cuentas
 
   constructor(
@@ -22,12 +22,14 @@ export class AuthService {
 
   // envia las credenciales al backend para iniciar sesion
   login(email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
+   
+    return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password });
   }
 
   // envia los datos al backend para registrar un nuevo usuario
   registrar(username: string, email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/registrar`, { username, email, password });
+    
+    return this.http.post<any>(`${this.apiUrl}/auth/registrar`, { username, email, password });
   }
 
   // guarda el token en localStorage despues del login exitoso
