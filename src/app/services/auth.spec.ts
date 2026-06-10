@@ -1,4 +1,5 @@
-//esta clase es para probar el servicio de autenticacion, se crea un test para verificar que el servicio se crea correctamente.
+//esta clase es para probar el servicio de autenticacion, se crea un test para verificar 
+// que el servicio se crea correctamente.
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService} from './auth';
